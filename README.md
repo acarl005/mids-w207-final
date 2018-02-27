@@ -3,7 +3,7 @@
 Our model for competing in [this Kaggle competition](https://www.kaggle.com/c/plant-seedlings-classification).
 This is for the MIDS w207 (Applied Machine Learning) final project. 
 
-See [the Jupyter Notebook](./acarl005/mids-w207-final/blob/master/main.ipynb).
+See [the Jupyter Notebook](./main.ipynb).
 
 
 ### Setup
