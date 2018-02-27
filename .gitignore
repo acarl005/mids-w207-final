@@ -1,0 +1,8 @@
+__pycache__
+data/**/*.png
+
+tensorboard
+.ipynb_checkpoints
+tensorflow-ckpt
+.DS_Store
+*.swp
