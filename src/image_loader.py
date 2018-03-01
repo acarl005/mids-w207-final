@@ -4,7 +4,7 @@ from glob import glob
 from PIL import Image
 from os import path, makedirs
 
-def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None):
+def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None, file_names=False):
     """Take a glob pattern for images and load into a 4-D numpy array, converted to grayscale"""
     if type(paths) == str:
         file_paths = glob(paths)
@@ -17,6 +17,7 @@ def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_u
         raise Exception("cannot load: %s" % str(paths))
 
     list_of_image_3d_arrays = []
+    list_of_file_names = []
     for file_path in file_paths:
         im = Image.open(file_path).convert("RGB")
         w, h = im.size
@@ -29,8 +30,12 @@ def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_u
                 im = pad_image(im, desired_size)
         if write_to:
             save_image(im, file_path, write_to, preserve_dir_tree_at)
-        arr = np.array(im)
+        arr = np.array(im) / 255
         list_of_image_3d_arrays.append(arr)
+        list_of_file_names.append(path.basename(file_path))
+
+    if file_names:
+        return list_of_image_3d_arrays, list_of_file_names
 
     return list_of_image_3d_arrays
 
