@@ -14,7 +14,7 @@ class AlexNet:
     def _create(self):
         """Create the computation graph in tensorflow"""
         # 1st layer: Conv -> ReLU -> LRN -> MaxPool
-        conv1 = tf.layers.conv2d(self.X, filters=96, kernel_size=(7, 7), strides=4, activation=tf.nn.relu, trainable=self.trainable, name="conv1")
+        conv1 = tf.layers.conv2d(self.X, filters=96, kernel_size=(11, 11), strides=4, activation=tf.nn.relu, trainable=self.trainable, name="conv1")
         norm1 = lrn(conv1, 2, 1e-05, 0.75, name="norm1")
         pool1 = tf.layers.max_pooling2d(norm1, pool_size=(3, 3), strides=2, name="pool1")
 
