@@ -26,7 +26,6 @@ See [the Jupyter Notebook](./main.ipynb).
 1. Mount the EBS Volume with [these instructions](https://devopscube.com/mount-ebs-volume-ec2-instance/). Keep in mind the device location in `/dev` will probably be different.
 1. Copy the files to the instance.
 1. Activate the Conda environment you want. For example, if you want TensorFlow on Python 3.6: `. ~/anaconda3/bin/activate tensorflow_p36`
-1. Run Jupyter `jupyter notebook --no-browser`. Get the token.
-1. To access the notebook you can SSH tunnel: `ssh -NL 8157:localhost:8888 ubuntu@your-host-name.compute-1.amazonaws.com`
-1. Visit your browser at `http://localhost:8157/?token=<your-token-here>`.
+1. Run Jupyter `jupyter lab --ip=* --no-browser`. Get the token.
+1. Visit your browser at `your-host-name.compute-1.amazonaws.com`:8888/?token=<your-token-here>`.
 

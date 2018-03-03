@@ -10,3 +10,5 @@ tensorflow-ckpt
 terraform.tfstate*
 terraform.tfvars
 .terraform/
+
+test_predictions*
