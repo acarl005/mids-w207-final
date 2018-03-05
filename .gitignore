@@ -7,8 +7,4 @@ tensorflow-ckpt
 .DS_Store
 *.swp
 
-terraform.tfstate*
-terraform.tfvars
-.terraform/
-
 test_predictions*
