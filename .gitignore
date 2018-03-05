@@ -6,5 +6,6 @@ tensorboard*
 tensorflow-ckpt
 .DS_Store
 *.swp
+*.h5
 
 test_predictions*
