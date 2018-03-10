@@ -1,4 +1,5 @@
 import numpy as np
+from random import uniform
 from math import floor
 
 def one_hot(labels):
@@ -7,18 +8,21 @@ def one_hot(labels):
     one_hot_encoded[np.arange(len(labels)), labels] = 1
     return one_hot_encoded
 
-def shuffle_and_split(data, labels, dev_fraction=0.2):
-    num_dev_examples = floor(len(data) * dev_fraction)
-    shuf_data, shuf_labels = shuffle(data, labels)
-    return (shuf_data[:-num_dev_examples],
-            shuf_labels[:-num_dev_examples],
-            shuf_data[-num_dev_examples:],
-            shuf_labels[-num_dev_examples:])
+def shuffle_n(*args):
+    rand_perm = np.random.permutation(len(args[0]))
+    return [np.array(x)[rand_perm] for x in args]
+
+# def shuffle(x, y):
+#     rand_perm = np.random.permutation(len(x))
+#     x = x[rand_perm]
+#     y = y[rand_perm]
+#     return x, y
 
 def shuffle(x, y):
-    rand_perm = np.random.permutation(len(x))
-    x = x[rand_perm]
-    y = y[rand_perm]
+    for i in range(len(x) - 1, 0, -1):
+        j = floor(uniform(0, i + 1))
+        x[[j, i]] = x[[i, j]]
+        y[[j, i]] = y[[i, j]]
     return x, y
 
 def get_batch(x, y, i, batch_size):

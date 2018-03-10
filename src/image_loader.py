@@ -4,11 +4,11 @@ from glob import glob
 from PIL import Image
 from os import path, makedirs
 
-def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None, file_names=False, rotate=0):
+def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None, return_file_paths=False, rotate=0):
     """Take a glob pattern for images and load into a 4-D numpy array, converted to grayscale"""
     if type(paths) == str:
         file_paths = glob(paths)
-    elif type(paths) == list:
+    elif type(paths) == list or type(paths) == np.ndarray or type(paths) == tuple:
         file_paths = []
         for each_path in paths:
             for file_name in glob(each_path):
@@ -20,7 +20,7 @@ def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_u
         raise Exception("no images found")
 
     list_of_image_3d_arrays = []
-    list_of_file_names = []
+    list_of_files = []
     for file_path in file_paths:
         im = Image.open(file_path).convert("RGB")
         w, h = im.size
@@ -32,15 +32,16 @@ def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_u
             elif pad_up:
                 im = pad_image(im, desired_size)
         if rotate:
-            im.rotate(rotate)
+            im = im.rotate(rotate)
         if write_to:
             save_image(im, file_path, write_to, preserve_dir_tree_at)
         arr = np.array(im) / 255
         list_of_image_3d_arrays.append(arr)
-        list_of_file_names.append(path.basename(file_path))
+        if return_file_paths:
+            list_of_files.append(file_path)
 
-    if file_names:
-        return list_of_image_3d_arrays, list_of_file_names
+    if return_file_paths:
+        return list_of_image_3d_arrays, list_of_files
 
     return list_of_image_3d_arrays
 
