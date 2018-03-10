@@ -15,12 +15,12 @@ class AlexNet:
         """Create the computation graph in tensorflow"""
         # 1st layer: Conv -> ReLU -> LRN -> MaxPool
         conv1 = tf.layers.conv2d(self.X, filters=96, kernel_size=(11, 11), strides=4, activation=tf.nn.relu, trainable=self.trainable, name="conv1")
-        norm1 = lrn(conv1, 2, 1e-05, 0.75, name="norm1")
+        norm1 = tf.nn.local_response_normalization(conv1, depth_radius=2, alpha=1e-05, beta=0.75, bias=1.0, name="norm1")
         pool1 = tf.layers.max_pooling2d(norm1, pool_size=(3, 3), strides=2, name="pool1")
 
         # 2nd layer: Conv -> ReLU -> LRN -> MaxPool
         conv2 = tf.layers.conv2d(pool1, filters=256, kernel_size=(5, 5), padding="SAME", activation=tf.nn.relu, trainable=self.trainable, name="conv2")
-        norm2 = lrn(conv2, 2, 1e-05, 0.75, name="norm2")
+        norm2 = tf.nn.local_response_normalization(conv2, depth_radius=2, alpha=1e-05, beta=0.75, bias=1.0, name="norm2")
         pool2 = tf.layers.max_pooling2d(norm2, pool_size=(3, 3), strides=2, name="pool2")
 
         # 3rd layer: Conv -> ReLU
@@ -33,11 +33,8 @@ class AlexNet:
         conv5 = tf.layers.conv2d(conv4, filters=256, kernel_size=(3, 3), padding="SAME", activation=tf.nn.relu, trainable=self.trainable, name="conv5")
         pool5 = tf.layers.max_pooling2d(conv5, pool_size=(3, 3), strides=2, name="pool5")
 
-        pool5_shape = pool5.get_shape()
-        size_fc_layer = pool5_shape[1] * pool5_shape[2] * pool5_shape[3]
-
         # 6th later: FC -> ReLU -> Dropout
-        flattened = tf.reshape(pool5, [-1, size_fc_layer])
+        flattened = tf.layers.flatten(pool5)
         fc6 = tf.layers.dense(flattened, units=4096, activation=tf.nn.relu, trainable=self.trainable, name="fc6")
         dropout6 = tf.layers.dropout(fc6, rate=self.dropout_rate)
 
@@ -47,9 +44,4 @@ class AlexNet:
 
         # 8th layer: FC -> unscaled activations
         self.logits = tf.layers.dense(dropout7, units=self.num_classes, trainable=self.trainable, name="fc8")
-
-
-def lrn(x, radius, alpha, beta, name, bias=1.0):
-    """Create a local response normalization layer"""
-    return tf.nn.local_response_normalization(x, depth_radius=radius, alpha=alpha, beta=beta, bias=bias, name=name)
 
