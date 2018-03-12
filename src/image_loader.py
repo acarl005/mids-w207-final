@@ -6,6 +6,9 @@ from PIL import Image
 from os import path, makedirs
 
 class Worker:
+    """
+    Creates a callable for handling loading image data in a child process in order to take advantage of parallelism
+    """
     def __init__(self, desired_size, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None, rotate=0):
         self.desired_size = desired_size
         self.scale_down = scale_down
@@ -35,13 +38,21 @@ class Worker:
         return np.array(im) / 255
 
     def pad_image(self, im):
+        """
+        makes the image square shaped
+        """
+        # first, create a new image of all 0's
         new_im = Image.new("RGB", size=(self.desired_size, self.desired_size), color=0)
         w_margin = (self.desired_size - im.size[0]) / 2
         h_margin = (self.desired_size - im.size[1]) / 2
+        # and then paste the image to the center of it, to obtain the "padded" image
         new_im.paste(im, (floor(w_margin), floor(h_margin), floor(self.desired_size - w_margin), floor(self.desired_size - h_margin)))
         return new_im
 
     def resize_image(self, im):
+        """
+        scales the image, and then uses `pad_image` to make sure its square
+        """
         w, h = im.size
         aspect_ratio = w / h
         if (aspect_ratio > 1):
@@ -67,6 +78,9 @@ class Worker:
                 makedirs(full_dir, exist_ok=True)
                 im.save(path.join(full_dir, path.basename(file_path)))
 
+# this is the process pool that will load images in parallel
+# as a "gotcha", this cannot be defined until the worker class is defined.
+# this is because the processes are forked from the main process, and the required objects must be in memory before forking
 pool = Pool()
 
 def load_images(paths, desired_size=224, scale_down=False, scale_up=False, pad_up=False, write_to=None, preserve_dir_tree_at=None, return_file_paths=False, rotate=0):

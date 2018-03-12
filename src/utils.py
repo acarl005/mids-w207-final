@@ -9,9 +9,13 @@ def one_hot(labels):
     return one_hot_encoded
 
 def shuffle_n(*args):
+    """
+    shuffles n number of arrays in the same way, but very memory-inefficient as there is unecessary copying
+    """
     rand_perm = np.random.permutation(len(args[0]))
     return [np.array(x)[rand_perm] for x in args]
 
+# this implementation caused out-of-memory exception when called on an array with 64000 images in it
 # def shuffle(x, y):
 #     rand_perm = np.random.permutation(len(x))
 #     x = x[rand_perm]
@@ -19,6 +23,10 @@ def shuffle_n(*args):
 #     return x, y
 
 def shuffle(x, y):
+    """
+    a more memory efficient shuffle implementation. This does it in-place using the Fisher-Yates shuffle.
+    no array copying necessary. it works on arrays with 64000 images in it
+    """
     for i in range(len(x) - 1, 0, -1):
         j = floor(uniform(0, i + 1))
         x[[j, i]] = x[[i, j]]
