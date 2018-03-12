@@ -1,6 +1,6 @@
 # Kaggle Plant Seedlings Classification
 
-Our model for competing in [this Kaggle competition](https://www.kaggle.com/c/plant-seedlings-classification).
+My model for competing in [this Kaggle competition](https://www.kaggle.com/c/plant-seedlings-classification).
 This is for the MIDS w207 (Applied Machine Learning) final project. 
 
 See [the Jupyter Notebook](./main.ipynb).
@@ -17,3 +17,5 @@ See [the Jupyter Notebook](./main.ipynb).
 
 1. Do the first 2 steps above.
 1. Set up from [this repo](https://github.com/acarl005/aws-terraform-deep-learning).
+
+This was trained on a machine equipped with a Nvidia TitanX GPU and 64GB of RAM. This notebook won't run on most personal computers.
