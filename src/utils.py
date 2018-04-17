@@ -39,3 +39,16 @@ def get_batch(x, y, i, batch_size):
     y_batch = y[index:index + batch_size]
     return x_batch, y_batch
 
+def arg_top_n(ary, n):
+    """
+    Returns the indices for the n largest values from a numpy array.
+    Like np.argmax, but works with the top n instead of just one maximum
+    """
+    flat = ary.flatten()
+    indices = np.argpartition(flat, -n)[-n:]
+    indices = indices[np.argsort(-flat[indices])]
+    return np.unravel_index(indices, ary.shape)
+
+def remove_ticks(plot):
+    plot.axes.get_xaxis().set_ticks([])
+    plot.axes.get_yaxis().set_ticks([])
