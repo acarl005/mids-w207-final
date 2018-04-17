@@ -50,5 +50,6 @@ def arg_top_n(ary, n):
     return np.unravel_index(indices, ary.shape)
 
 def remove_ticks(plot):
+    """removes the tick marks from a matplotlib plot"""
     plot.axes.get_xaxis().set_ticks([])
     plot.axes.get_yaxis().set_ticks([])
