@@ -4,7 +4,8 @@ My model for competing in [this Kaggle competition](https://www.kaggle.com/c/pla
 This is for the MIDS w207 (Applied Machine Learning) final project. 
 My final ranking was 528/836.
 
-See [the Jupyter Notebook](./main.ipynb).
+See [the main Jupyter Notebook](./main.ipynb).
+A summary of this work without the code examples is in [summary.md](./summary.md).
 
 
 ## Setup
