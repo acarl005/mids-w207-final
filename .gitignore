@@ -8,4 +8,6 @@ tensorflow-ckpt
 *.swp
 *.h5
 
+!diagrams/tensorboard*
+
 test_predictions*
